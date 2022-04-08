@@ -12,7 +12,7 @@ type Props = {
     isLoading: boolean
 }
 
-function Register({ user, setUser, showAlert,setshowAlert, isLoading }: Props) {
+function Register({ user, setUser, showAlert, setshowAlert, isLoading }: Props) {
     const [values, setValues] = useState({
         name: '',
         email: '',
@@ -35,10 +35,13 @@ function Register({ user, setUser, showAlert,setshowAlert, isLoading }: Props) {
             .then(data => {
                 if (data.error) {
                     alert('Oops, something went wrong.')
+                    setshowAlert(true)
                 } else {
                     // we managed to create our user!
                     localStorage.setItem('token', data.token)
                     setUser(data.user)
+                    setshowAlert(false)
+
                 }
             })
     }
@@ -56,9 +59,12 @@ function Register({ user, setUser, showAlert,setshowAlert, isLoading }: Props) {
             .then(data => {
                 if (data.error) {
                     alert(data.error)
+                    setshowAlert(true)
                 } else {
                     localStorage.token = data.token
                     setUser(data.user) // data === { user, token }
+                    setshowAlert(false)
+
                 }
             })
     }
