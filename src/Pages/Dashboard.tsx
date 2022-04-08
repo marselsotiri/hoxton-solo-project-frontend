@@ -38,7 +38,6 @@ function Dashboard({ showAlert, setshowAlert, isLoading, user, setUser, setLoadi
                 .then(data => {
                     if (data.error) {
                         console.log('Validation failed.')
-                        setshowAlert(true)
                     } else {
                         setPlayers(data)
                         setLoading(false)
@@ -62,10 +61,10 @@ function Dashboard({ showAlert, setshowAlert, isLoading, user, setUser, setLoadi
                 .then(players => {
                     if (players.error) {
                         console.log('Validation failed.')
-                        setshowAlert(true)
                     } else {
                         setPlayers(players)
                         setLoading(false)
+                        setshowAlert(false)
                     }
                 })
         }
@@ -79,7 +78,7 @@ function Dashboard({ showAlert, setshowAlert, isLoading, user, setUser, setLoadi
         if (name && position && team) {
             createPlayer(name, position, team);
             setValues({ name: '', position: '', team: '' });
-        }
+        } else { setshowAlert(true) }
     };
     useEffect(() => {
         getPlayers();
