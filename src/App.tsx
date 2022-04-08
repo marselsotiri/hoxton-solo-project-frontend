@@ -1,43 +1,57 @@
-import { useState } from 'react'
-import logo from './logo.svg'
-import './App.css'
+
+import { Route, Routes } from 'react-router-dom'
+import Home from './Pages/Home'
+import Register from './Pages/Register'
+import Error from './Pages/Error'
+
+import { useEffect, useState } from 'react'
+import { UserType } from './types'
+import Dashboard from './Pages/Dashboard'
+import Edit from './Pages/Edit'
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [showAlert, setshowAlert] = useState<boolean>(false)
+
+  const [isLoading, setLoading] = useState<boolean>(false)
+
+
+  const [user, setUser] = useState<UserType | null>(null)
+
+  useEffect(
+    () => {
+      validateUser()
+    }, []
+  )
+
+  function validateUser() {
+
+    if (localStorage.token) {
+      fetch('http://localhost:4000/validate', {
+        headers: {
+          Authorization: localStorage.token
+        }
+      })
+        .then(resp => resp.json())
+        .then(data => {
+          if (data.error) {
+            console.log('Validation failed.')
+          } else {
+            setUser(data)
+          }
+        })
+    }
+  }
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.tsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+      <Routes>
+        <Route index element={<Home user={user} />}></Route>
+        <Route path='/dashboard' element={<Dashboard showAlert={showAlert} setshowAlert={setshowAlert} isLoading={isLoading} setLoading={setLoading} user={user} setUser={setUser} />}></Route>
+        <Route path='/register' element={<Register user={user} setUser={setUser} isLoading={isLoading} showAlert={showAlert} setshowAlert={setshowAlert} />}></Route>
+        <Route path='/edit/:id' element={<Edit user={user} setUser={setUser} isLoading={isLoading} setLoading={setLoading} />}></Route>
+        <Route path='/*' element={<Error />}></Route>
+      </Routes>
     </div>
   )
 }
