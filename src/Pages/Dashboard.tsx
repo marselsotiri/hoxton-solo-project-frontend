@@ -38,6 +38,7 @@ function Dashboard({ showAlert, setshowAlert, isLoading, user, setUser, setLoadi
                 .then(data => {
                     if (data.error) {
                         console.log('Validation failed.')
+                        setshowAlert(true)
                     } else {
                         setPlayers(data)
                         setLoading(false)
@@ -61,6 +62,7 @@ function Dashboard({ showAlert, setshowAlert, isLoading, user, setUser, setLoadi
                 .then(players => {
                     if (players.error) {
                         console.log('Validation failed.')
+                        setshowAlert(true)
                     } else {
                         setPlayers(players)
                         setLoading(false)
