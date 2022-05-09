@@ -2,7 +2,7 @@
 # Coach App
 
 This is an Application I cretated about sports.
-This App is a trainer's only App.
+This App is a coach's only App.
 They can create their own profile and use it to add or delete players from their lists.
 
 
@@ -34,7 +34,7 @@ Start the server
 
 
 ## 🛠 Skills
-Javascript, HTML, CSS, React, Typescript , Node.js 
+Javascript, HTML, CSS, React, Typescript, Node.js 
 
 ## Lessons Learned
 
